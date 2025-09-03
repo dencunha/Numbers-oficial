@@ -43,60 +43,69 @@
                 </div>
             </div>
             <aside>
-                <header>
-                    <span>QUERO SORTEAR:</span>
-                    <p>defina o intervalo e a quantidade de números, clique em "Sortear" 
-                        e veja os resultados na tela. É rápido e fácil!</p>
-                </header>
-                    <form id="counter">
-                        <div>
-                            <fieldset>
-                                <legend>NUMEROS</legend>
-                                <div class="gradient-wrap">
-                                    <input type="number" id="" name="">
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend>DE</legend>
-                                <div class="gradient-wrap">
-                                    <input type="number" name="start-number" id="start-number">
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend>ATÉ</legend>
-                                <div class="gradient-wrap">
-                                    <input type="number" name="end-number" id="end-number">
-                                </div>
-                            </fieldset>
-                        </div>
+                <div class="raffle-maker">
+                    <header>
+                        <span>QUERO SORTEAR:</span>
+                        <p>defina o intervalo e a quantidade de números, clique em "Sortear" 
+                            e veja os resultados na tela. É rápido e fácil!
+                        </p>
+                    </header>
+                        <form id="counter">
+                            <div>
+                                <fieldset>
+                                    <legend>NUMEROS</legend>
+                                    <div class="gradient-wrap">
+                                        <input type="number" id="quantity" name="">
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>DE</legend>
+                                    <div class="gradient-wrap">
+                                        <input type="number" name="start-number" id="start-number">
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>ATÉ</legend>
+                                    <div class="gradient-wrap">
+                                        <input type="number" name="end-number" id="end-number">
+                                    </div>
+                                </fieldset>
+                            </div>
 
-                        <div class="switch">
-                            <input type="checkbox" name="toggle" id="toggle">
-                            <label for="toggle" class="slider"></label>
-                            <span class="legend">Não repitir números</span>
-                        </div>
-                    </form>
+                            <div class="switch">
+                                <input type="checkbox" name="toggle" id="toggle">
+                                <label for="toggle" class="slider"></label>
+                                <span class="legend">Não repitir números</span>
+                            </div>
+                        </form>
 
-                <button class="btn-draw" name="button">
-                    <span class="toggle-text">
-                        <label class="btn-unchecked">
+                    <button class="btn-draw" name="button">
+                        <span class="draw">
                             SORTEAR
                             <img src="assets/arrow.svg" alt="Seta para sortear">
-                        </label>
-                        <label class="btn-checked">
+                        </span>
+                    </button>
+                </div>
+                <div id="result">
+                    <header>
+                        <span>RESULTADO DO SORTEIO</span>
+                        <p>1° RESULTADO</p>
+                    </header>
+                    <div class="results">
+                        <span class="number">
+                           <span class="draw-number">25</span>
+                        </span>
+                        <span class="number">
+                            <span class="draw-number">23</span>
+                        </span>
+                    </div>
+                    <button class="btn-draw">
+                        <span class="redo">
                             SORTEAR NOVAMENTE 
                             <img src="assets/redo.svg" alt="sortear novamente icon">
-                        </label>
-                    </span>
-                    <!-- <span class="btn-unchecked">
-                        SORTEAR
-                        <img src="assets/arrow.svg" alt="Seta para sortear">
-                    </span>
-                    <span class="btn-checked">
-                        SORTEAR NOVAMENTE 
-                        <img src="assets/redo.svg" alt="sortear novamente icon">
-                    </span>  -->
-                </button>
+                        </span> 
+                    </button>
+                </div>
 
                 <div class="info mobile-only">
                     <div>
@@ -116,6 +125,7 @@
                         </article>    
                     </div>
                 </div>
+                
             </aside>
         </section>
     </main>

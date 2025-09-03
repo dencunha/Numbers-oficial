@@ -1,6 +1,7 @@
 aside {
     padding-block: 2.125rem;
     max-width: 30.125rem;
+    min-width: 30.125rem;
     
 
     header {
@@ -177,13 +178,18 @@ button.btn-draw {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: .5rem;
-
   margin-bottom: 2.125rem;
 
   cursor: pointer;
 
   position: relative;
+
+  span {
+    /* display: flex; */
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+  }
 }
 
 button.btn-draw:hover::before {
@@ -211,7 +217,7 @@ button.btn-draw:hover::before {
   z-index: -1;
   opacity: 0;
 
-  animation: glowing 10s linear infinite;
+  animation: glowing 5s linear infinite;
   transition: opacity .3s ease-in-out;
 }
 
@@ -227,12 +233,33 @@ button.btn-draw:hover::before {
   }
 }
 
-.btn-unchecked {
-  opacity: 1;
+.draw {
+  display: flex;
 }
 
-.btn-checked {
-  opacity: 0;
+button.btn-draw:hover {
+  img[src*="redo"] {
+    transform: rotate(360deg);
+    transition: transform 2s;
+  }
+
+  img[src*="arrow"] {
+    animation: slide 2s ease-in-out;
+  }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(.625rem);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 @keyframes glowing {
@@ -250,6 +277,115 @@ button.btn-draw:hover::before {
 }
 
 
+.raffle-maker {
+  /* display: none; */
+}
+
+/* Resultado do sorteio */
+
+#result {
+  display: none;
+
+  header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .25rem;
+  }
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-block: 2.5rem;
+}
+
+.redo {
+  display: flex;
+}
+
+.number {
+  background-color: var(--content-brand);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: var(--number);
+  padding: .75rem;
+  border-radius: 1.75rem;
+  width: 6rem;
+  height: 6rem;
+  text-align: center;
+  opacity: 0;
+  transform-origin: center center;
+  animation: scaleUp 0.6s ease forwards, rotateFull 2.4s linear 0.6s forwards;
+  /* will-change: transform, background-color, opacity; */
+}
+
+.draw-number {
+  color: transparent;
+  display: inline-block;
+  transform-origin: center center;
+  animation: counterRotate 2.4s linear 0.6s forwards;
+  will-change: transform, color, opacity;
+  opacity: 0;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Escala do container */
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Rotação do container */
+@keyframes rotateFull {
+  0% {
+    transform: rotate(0deg);
+    background-color: var(--content-brand);
+  }
+  90% {
+    transform: rotate(324deg);
+    background-color: var(--content-brand);
+  }
+  100% {
+    transform: rotate(360deg);
+    background-color: transparent;
+  }
+}
+
+/* Rotação inversa do número para ficar reto */
+@keyframes counterRotate {
+  0% {
+    opacity: 0;
+    color: transparent;
+    transform: rotate(0deg);
+  }
+  30% {
+    opacity: 1;
+    color: var(--color-inverse);
+    transform: rotate(-108deg); /* -30% de 360° */
+  }
+  90% {
+    opacity: 1;
+    color: var(--color-inverse);
+    transform: rotate(-324deg); /* -90% de 360° */
+  }
+  100% {
+    opacity: 1;
+    color: var(--content-brand);
+    transform: rotate(-360deg);
+  }
+} 
+
 @media (width <= 80em) {
   aside {
     max-width: 100%;
@@ -261,5 +397,9 @@ button.btn-draw:hover::before {
 
   .switch {
     justify-content: center;
+  }
+
+  #result {
+    margin-bottom: 4.937rem;
   }
 }
