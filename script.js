@@ -1,88 +1,81 @@
-// script.js
-document.addEventListener("DOMContentLoaded", () => {
-  const drawBtn = document.querySelector(".btn-draw .draw")?.closest("button");
-  const raffleMaker = document.querySelector(".raffle-maker");
-  const resultDiv = document.getElementById("result");
-  const resultsContainer = resultDiv.querySelector(".results");
-  const redoBtn = resultDiv.querySelector(".btn-draw .redo")?.closest("button");
+const raffleMaker = document.querySelector(".raffle-maker")
+const resultDiv = document.getElementById("result")
+const resultsContainer = document.querySelector(".results")
+const drawButton = document.querySelector(".btn-draw .draw")
+const redoButton = document.querySelector("#result .btn-draw")
 
-  const quantityInput = document.getElementById("quantity");
-  const startInput = document.getElementById("start-number");
-  const endInput = document.getElementById("end-number");
-  const noRepeatToggle = document.getElementById("toggle");
+const inputQuantity = document.getElementById("quantity")
+const inputStart = document.getElementById("start-number")
+const inputEnd = document.getElementById("end-number")
+const inputNoRepeat = document.getElementById("toggle")
 
-  // Função para gerar números aleatórios
-  function generateNumbers(quantity, min, max, allowRepeats) {
-    const numbers = [];
-    while (numbers.length < quantity) {
-      const rand = Math.floor(Math.random() * (max - min + 1)) + min;
-      if (allowRepeats || !numbers.includes(rand)) {
-        numbers.push(rand);
+function generateNumbers(qtd, start, end, allowRepeat) {
+  let results = []
+
+  while (results.length < qtd) {
+    let number = Math.floor(Math.random() * (end - start + 1)) + start
+    
+    if (allowRepeat) {
+      results.push(number)
+    } else {
+      if (results.indexOf(number) === -1) {
+        results.push(number)
       }
     }
-    return numbers;
   }
 
-  // Função para animar a exibição sequencial dos números
-  async function showNumbersSequential(numbers) {
-    resultsContainer.innerHTML = ""; // limpa resultados anteriores
+  return results
+}
 
-    for (let i = 0; i < numbers.length; i++) {
-      const wrapper = document.createElement("span");
-      wrapper.classList.add("number");
+drawButton.parentElement.onclick = function() {
+  let qtd = Number(inputQuantity.value)
+  let start = Number(inputStart.value)
+  let end = Number(inputEnd.value)
+  let allowRepeat = !inputNoRepeat.checked
 
-      const span = document.createElement("span");
-      span.classList.add("draw-number");
-      span.textContent = numbers[i];
+  let numbers = generateNumbers(qtd, start, end, allowRepeat)
 
-      wrapper.appendChild(span);
-      resultsContainer.appendChild(wrapper);
+  raffleMaker.style.display = "none"
+  resultDiv.style.display = "block"
 
-      // força reflow para reiniciar animação
-      void wrapper.offsetWidth;
+  resultsContainer.innerHTML = ""
 
-      // adiciona classes para disparar as animações do CSS
-      wrapper.style.animationPlayState = "running";
-      span.style.animationPlayState = "running";
+  // header aparece primeiro (já está no HTML)
+  // depois de 1 segundo, começa a exibir números
+  setTimeout(function() {
+    showNumbersSequential(numbers, 0)
+  }, 1000)
+}
 
-      // espera a animação terminar antes de exibir o próximo
-      await new Promise(resolve =>
-        setTimeout(resolve, 3000) // 0.6s scaleUp + 2.4s rotateFull
-      );
-    }
-
-    // mostra o botão "sortear novamente" depois de todos os números
-    redoBtn.style.display = "flex";
+function showNumbersSequential(numbers, index) {
+  if (index >= numbers.length) {
+    // acabou, mostrar botão "sorteio novamente"
+    redoButton.style.display = "block"
+    return
   }
 
-  // Clique no botão "SORTEAR"
-  drawBtn.addEventListener("click", (e) => {
-    e.preventDefault();
+  let span = document.createElement("span")
+  span.classList.add("number")
 
-    const quantity = parseInt(quantityInput.value, 10) || 1;
-    const min = parseInt(startInput.value, 10) || 1;
-    const max = parseInt(endInput.value, 10) || 100;
-    const allowRepeats = !noRepeatToggle.checked;
+  let inner = document.createElement("span")
+  inner.classList.add("draw-number")
+  inner.textContent = numbers[index]
 
-    const numbers = generateNumbers(quantity, min, max, allowRepeats);
+  span.appendChild(inner)
+  resultsContainer.appendChild(span)
 
-    raffleMaker.style.display = "none";
-    resultDiv.style.display = "block";
+  // força a animação (dependendo do seu CSS pode precisar do truque do offsetWidth)
+  span.style.animationPlayState = "running"
+  inner.style.animationPlayState = "running"
 
-    // mostra header imediatamente
-    resultDiv.querySelector("header").style.display = "flex";
-    resultsContainer.innerHTML = "";
-    redoBtn.style.display = "none";
+  // esperar 3 segundos (duração da animação) e chamar o próximo
+  setTimeout(function() {
+    showNumbersSequential(numbers, index + 1)
+  }, 3000)
+}
 
-    // 1 segundo depois, mostra os números
-    setTimeout(() => {
-      showNumbersSequential(numbers);
-    }, 1000);
-  });
-
-  // Clique no botão "SORTEAR NOVAMENTE"
-  redoBtn.addEventListener("click", () => {
-    resultDiv.style.display = "none";
-    raffleMaker.style.display = "block";
-  });
-});
+redoButton.onclick = function() {
+  resultDiv.style.display = "none"
+  raffleMaker.style.display = "block"
+  redoButton.style.display = "none"
+}
