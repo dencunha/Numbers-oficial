@@ -33,12 +33,32 @@ drawButton.parentElement.onclick = function() {
   let end = Number(inputEnd.value)
   let allowRepeat = !inputNoRepeat.checked
 
+  //validação dos campos
+  if (!qtd || !start || !end) {
+    alert("⚠️ Por favor, preencha todos os campos antes de sortear!")
+    return
+  }
+
+  //validação para que os campos obtenham números inteiros
+  if (!Number.isInteger(qtd) || !Number.isInteger(start) || !Number.isInteger(end)) {
+    alert("⚠️ Digite apenas números inteiros válidos!")
+    return
+  }
+
+  //validação para o campo de início não ser maior que o final
+  if (start > end) {
+    alert("⚠️ O número inicial não pode ser maior que o final!")
+    return
+  }
+
   let numbers = generateNumbers(qtd, start, end, allowRepeat)
 
   raffleMaker.style.display = "none"
   resultDiv.style.display = "block"
 
   resultsContainer.innerHTML = ""
+
+  redoButton.style.display = "none"
 
   // header aparece primeiro (já está no HTML)
   // depois de 1 segundo, começa a exibir números
@@ -50,7 +70,7 @@ drawButton.parentElement.onclick = function() {
 function showNumbersSequential(numbers, index) {
   if (index >= numbers.length) {
     // acabou, mostrar botão "sorteio novamente"
-    redoButton.style.display = "block"
+    redoButton.style.display = "flex"
     return
   }
 
